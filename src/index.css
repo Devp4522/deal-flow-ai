@@ -2,87 +2,101 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* MergerFlow Design System - Elegant Financial SaaS */
+    --background: 40 33% 97%; /* #FBF9F7 warm cream */
+    --foreground: 20 8% 16%; /* #2E2A28 charcoal brown */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 40 33% 98%;
+    --card-foreground: 20 8% 16%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 40 33% 98%;
+    --popover-foreground: 20 8% 16%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Navy accent - primary brand */
+    --primary: 218 75% 12%; /* #061735 deep navy */
+    --primary-foreground: 40 33% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* CTA dark */
+    --secondary: 15 6% 16%; /* #2D2726 */
+    --secondary-foreground: 40 33% 97%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Gold accent */
+    --accent: 39 61% 75%; /* #E4C89A */
+    --accent-foreground: 20 8% 16%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 40 20% 92%;
+    --muted-foreground: 20 8% 40%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 40 33% 97%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 218 75% 12%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --gold: 39 61% 75%;
+    --navy: 218 75% 12%;
+    --cream: 40 33% 97%;
+    --charcoal: 20 8% 16%;
+    
+    /* Gradients */
+    --gradient-hero: radial-gradient(ellipse 80% 50% at 50% 100%, hsl(39 61% 75% / 0.15), transparent);
+    --gradient-cta: linear-gradient(180deg, hsl(15 6% 20%), hsl(15 6% 14%));
+    --gradient-navy: linear-gradient(180deg, hsl(218 75% 14%), hsl(218 75% 10%));
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(20 8% 16% / 0.08);
+    --shadow-medium: 0 8px 30px -8px hsl(20 8% 16% / 0.12);
+    --shadow-card: 0 2px 12px -2px hsl(20 8% 16% / 0.06);
+    --shadow-cta: 0 4px 24px -4px hsl(15 6% 16% / 0.3);
+    --shadow-lift: 0 12px 40px -12px hsl(20 8% 16% / 0.15);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 218 75% 8%;
+    --foreground: 40 33% 97%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 218 75% 10%;
+    --card-foreground: 40 33% 97%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 218 75% 10%;
+    --popover-foreground: 40 33% 97%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 40 33% 97%;
+    --primary-foreground: 218 75% 12%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 39 61% 75%;
+    --secondary-foreground: 218 75% 12%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 218 50% 15%;
+    --muted-foreground: 40 20% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 39 61% 75%;
+    --accent-foreground: 218 75% 12%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 40 33% 97%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 218 50% 18%;
+    --input: 218 50% 18%;
+    --ring: 39 61% 75%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +114,125 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-foreground;
+  }
+}
+
+@layer components {
+  /* CTA Button Styles */
+  .cta-primary {
+    @apply relative overflow-hidden rounded-full px-8 py-4 font-medium text-primary-foreground transition-all duration-300;
+    background: var(--gradient-cta);
+    box-shadow: var(--shadow-cta), inset 0 1px 0 hsl(15 6% 30%);
+  }
+
+  .cta-primary:hover {
+    @apply translate-y-[-2px];
+    box-shadow: var(--shadow-lift), inset 0 1px 0 hsl(15 6% 30%);
+  }
+
+  .cta-outline {
+    @apply rounded-full border-2 border-foreground/20 px-6 py-3 font-medium text-foreground transition-all duration-300 hover:border-foreground/40 hover:bg-foreground/5;
+  }
+
+  /* Card Styles */
+  .card-feature {
+    @apply rounded-2xl bg-card p-6 transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-feature:hover {
+    @apply translate-y-[-4px];
+    box-shadow: var(--shadow-medium);
+  }
+
+  .card-pricing {
+    @apply rounded-3xl p-8 transition-all duration-300;
+    background: var(--gradient-navy);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .card-pricing:hover {
+    @apply scale-[1.02];
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* Hero glow effect */
+  .hero-glow {
+    @apply absolute bottom-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2;
+    background: radial-gradient(ellipse 100% 70% at 50% 100%, hsl(39 61% 75% / 0.2), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Sticky nav compact state */
+  .nav-compact {
+    @apply py-2;
+  }
+
+  .nav-expanded {
+    @apply py-4;
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-20 lg:py-28;
+  }
+
+  /* Testimonial card */
+  .testimonial-card {
+    @apply rounded-2xl bg-card p-6 transition-all duration-300;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* FAQ accordion custom styles */
+  .faq-item {
+    @apply border-b border-border/50 transition-colors hover:bg-muted/30;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Staggered animations */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:translate-y-[-4px];
   }
 }

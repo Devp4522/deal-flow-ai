@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface NavigationProps {
@@ -48,8 +48,8 @@ const Navigation = ({ onBookDemo }: NavigationProps) => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2" aria-label="MergerFlow.ai Home">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-serif font-bold text-lg">M</span>
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-serif font-semibold text-xl text-foreground">
               MergerFlow<span className="text-accent">.ai</span>
@@ -71,17 +71,11 @@ const Navigation = ({ onBookDemo }: NavigationProps) => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="rounded-full">
+            <Button variant="ghost" size="sm" className="rounded-full text-muted-foreground hover:text-foreground">
               Log in
             </Button>
-            <Button variant="outline" size="sm" className="rounded-full">
+            <Button variant="outline" size="sm" className="rounded-full border-foreground/20">
               Sign up
-            </Button>
-            <Button
-              onClick={onBookDemo}
-              className="cta-primary text-sm px-6 py-2"
-            >
-              Book a Demo
             </Button>
           </div>
 
@@ -115,9 +109,6 @@ const Navigation = ({ onBookDemo }: NavigationProps) => {
                 </Button>
                 <Button variant="outline" className="justify-start rounded-full">
                   Sign up
-                </Button>
-                <Button onClick={onBookDemo} className="cta-primary">
-                  Book a Demo
                 </Button>
               </div>
             </div>

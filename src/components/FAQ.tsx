@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import AnimatedSection from './AnimatedSection';
 
 const faqs = [
   {
@@ -42,35 +43,37 @@ const FAQ = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-3xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
+          <AnimatedSection className="text-center mb-12">
             <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
               FAQ
             </span>
             <h2 className="font-serif text-3xl lg:text-4xl font-medium">
               Frequently asked questions
             </h2>
-          </div>
+          </AnimatedSection>
 
           {/* Accordion */}
-          <Accordion type="single" collapsible className="space-y-2">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="faq-item rounded-xl px-6 border-none bg-card"
-              >
-                <AccordionTrigger className="text-left font-serif text-lg font-medium hover:no-underline py-5">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <AnimatedSection delay={200}>
+            <Accordion type="single" collapsible className="space-y-2">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="faq-item rounded-xl px-6 border-none bg-card"
+                >
+                  <AccordionTrigger className="text-left font-serif text-lg font-medium hover:no-underline py-5">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </AnimatedSection>
 
           {/* Additional help */}
-          <div className="text-center mt-12 p-8 rounded-2xl bg-muted/50">
+          <AnimatedSection delay={400} className="text-center mt-12 p-8 rounded-2xl bg-muted/50">
             <h3 className="font-serif text-xl font-medium mb-2">
               Still have questions?
             </h3>
@@ -83,7 +86,7 @@ const FAQ = () => {
             >
               support@mergerflow.ai
             </a>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>

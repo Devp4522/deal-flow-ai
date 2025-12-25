@@ -1,4 +1,5 @@
 import { Calendar, FileSearch, BarChart3, Shield, Users, Plug } from 'lucide-react';
+import AnimatedSection from './AnimatedSection';
 
 const features = [
   {
@@ -48,7 +49,7 @@ const Features = ({ screenshotImage }: FeaturesProps) => {
     <section id="products" className="section-padding relative">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <AnimatedSection className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
             Product Features
           </span>
@@ -58,38 +59,36 @@ const Features = ({ screenshotImage }: FeaturesProps) => {
           <p className="text-lg text-muted-foreground">
             Purpose-built tools that automate the repetitive work so your team can focus on what matters — winning deals.
           </p>
-        </div>
+        </AnimatedSection>
 
         {/* Feature Cards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
           {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className="card-feature group cursor-pointer"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
-                <feature.icon className="w-6 h-6" />
+            <AnimatedSection key={feature.title} delay={index * 100}>
+              <div className="card-feature group cursor-pointer h-full">
+                <div className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
+                  <feature.icon className="w-6 h-6" />
+                </div>
+                <h3 className="font-serif text-xl font-medium mb-2 text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
+                <button className="mt-4 text-sm font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1">
+                  Learn more
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
               </div>
-              <h3 className="font-serif text-xl font-medium mb-2 text-foreground">
-                {feature.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-              <button className="mt-4 text-sm font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1">
-                Learn more
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
 
         {/* Feature Showcase */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
+          <AnimatedSection className="relative">
             <div className="absolute -top-8 -left-8 w-40 h-40 bg-accent/10 rounded-full blur-3xl" aria-hidden="true" />
             <img
               src={screenshotImage}
@@ -97,9 +96,9 @@ const Features = ({ screenshotImage }: FeaturesProps) => {
               className="rounded-2xl shadow-medium border border-border/50 relative z-10"
               loading="lazy"
             />
-          </div>
+          </AnimatedSection>
           
-          <div className="space-y-6">
+          <AnimatedSection delay={200} className="space-y-6">
             <h3 className="font-serif text-2xl lg:text-4xl font-medium">
               AI-powered insights at every stage
             </h3>
@@ -125,7 +124,7 @@ const Features = ({ screenshotImage }: FeaturesProps) => {
                 </li>
               ))}
             </ul>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>

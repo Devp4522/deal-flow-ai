@@ -1,4 +1,5 @@
-import { Linkedin, Twitter, Github } from 'lucide-react';
+import { Linkedin, Twitter, Github, Zap } from 'lucide-react';
+import AnimatedSection from './AnimatedSection';
 
 const footerLinks = {
   product: [
@@ -45,7 +46,7 @@ const Footer = ({ onBookDemo }: FooterProps) => {
     <footer id="contact" className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         {/* CTA Section */}
-        <div className="text-center pb-16 border-b border-primary-foreground/10">
+        <AnimatedSection className="text-center pb-16 border-b border-primary-foreground/10">
           <h2 className="font-serif text-3xl lg:text-4xl font-medium mb-4">
             Ready to transform your deal flow?
           </h2>
@@ -66,10 +67,10 @@ const Footer = ({ onBookDemo }: FooterProps) => {
               Contact Sales
             </a>
           </div>
-        </div>
+        </AnimatedSection>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12">
+        <AnimatedSection delay={200} className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12">
           <div>
             <h3 className="font-semibold mb-4">Product</h3>
             <ul className="space-y-3">
@@ -130,13 +131,13 @@ const Footer = ({ onBookDemo }: FooterProps) => {
               ))}
             </ul>
           </div>
-        </div>
+        </AnimatedSection>
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary-foreground flex items-center justify-center">
-              <span className="text-primary font-serif font-bold text-lg">M</span>
+            <div className="w-9 h-9 rounded-xl bg-primary-foreground flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary" />
             </div>
             <span className="font-serif font-semibold text-lg">
               MergerFlow<span className="text-accent">.ai</span>

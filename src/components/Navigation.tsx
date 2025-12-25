@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Menu, X, Zap, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
 
 interface NavigationProps {
   onBookDemo: () => void;
 }
 
 const Navigation = ({ onBookDemo }: NavigationProps) => {
+  const navigate = useNavigate();
+  const { user, signOut, loading } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +37,15 @@ const Navigation = ({ onBookDemo }: NavigationProps) => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    try {
+      await signOut();
+    } finally {
+      setIsSigningOut(false);
+    }
   };
 
   return (
@@ -71,12 +85,43 @@ const Navigation = ({ onBookDemo }: NavigationProps) => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="rounded-full text-muted-foreground hover:text-foreground">
-              Log in
-            </Button>
-            <Button variant="outline" size="sm" className="rounded-full border-foreground/20">
-              Sign up
-            </Button>
+            {loading ? (
+              <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+            ) : user ? (
+              <>
+                <span className="text-sm text-muted-foreground truncate max-w-[150px]">
+                  {user.email}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="rounded-full text-muted-foreground hover:text-foreground"
+                  onClick={handleSignOut}
+                  disabled={isSigningOut}
+                >
+                  {isSigningOut ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Log out'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="rounded-full text-muted-foreground hover:text-foreground"
+                  onClick={() => navigate('/auth')}
+                >
+                  Log in
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="rounded-full border-foreground/20"
+                  onClick={() => navigate('/auth?mode=signup')}
+                >
+                  Sign up
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -104,12 +149,41 @@ const Navigation = ({ onBookDemo }: NavigationProps) => {
                 </button>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-                <Button variant="ghost" className="justify-start rounded-full">
-                  Log in
-                </Button>
-                <Button variant="outline" className="justify-start rounded-full">
-                  Sign up
-                </Button>
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin text-muted-foreground mx-auto" />
+                ) : user ? (
+                  <>
+                    <span className="text-sm text-muted-foreground py-2">
+                      {user.email}
+                    </span>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start rounded-full"
+                      onClick={handleSignOut}
+                      disabled={isSigningOut}
+                    >
+                      {isSigningOut ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                      Log out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start rounded-full"
+                      onClick={() => { navigate('/auth'); setIsMobileMenuOpen(false); }}
+                    >
+                      Log in
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start rounded-full"
+                      onClick={() => { navigate('/auth?mode=signup'); setIsMobileMenuOpen(false); }}
+                    >
+                      Sign up
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

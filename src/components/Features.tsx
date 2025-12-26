@@ -86,41 +86,47 @@ const Features = ({ screenshotImage }: FeaturesProps) => {
           ))}
         </div>
 
-        {/* Feature Showcase */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <AnimatedSection className="relative">
-            <div className="absolute -top-8 -left-8 w-40 h-40 bg-accent/10 rounded-full blur-3xl" aria-hidden="true" />
-            <img
-              src={screenshotImage}
-              alt="MergerFlow analytics dashboard showing deal pipeline and performance metrics"
-              className="rounded-2xl shadow-medium border border-border/50 relative z-10"
-              loading="lazy"
-            />
+        {/* Why MergerFlow Section */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center bg-muted/50 -mx-4 lg:-mx-8 px-4 lg:px-8 py-16 lg:py-24 rounded-3xl">
+          <AnimatedSection className="relative order-2 lg:order-1">
+            <div className="bg-[#1a1f2e] rounded-2xl p-3 shadow-xl">
+              <img
+                src={screenshotImage}
+                alt="MergerFlow analytics dashboard showing deal pipeline and performance metrics"
+                className="rounded-xl w-full"
+                loading="lazy"
+              />
+            </div>
           </AnimatedSection>
           
-          <AnimatedSection delay={200} className="space-y-6">
-            <h3 className="font-serif text-2xl lg:text-4xl font-medium">
-              AI-powered insights at every stage
-            </h3>
-            <p className="text-lg text-muted-foreground">
-              Our multi-agent AI works across your entire deal lifecycle, providing intelligent automation and actionable insights.
+          <AnimatedSection delay={200} className="space-y-8 order-1 lg:order-2">
+            <div>
+              <span className="text-sm text-accent uppercase tracking-[0.2em] font-medium">
+                Why MergerFlow
+              </span>
+              <h3 className="font-serif text-3xl lg:text-5xl font-medium mt-4 leading-tight">
+                Built for the way modern deal teams work
+              </h3>
+            </div>
+            
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              From first pitch to close, MergerFlow.ai streamlines every stage of the M&A lifecycle with intelligent automation.
             </p>
             
             <ul className="space-y-4">
               {[
-                'Automatic document classification and summarization',
-                'Risk scoring and anomaly detection across data rooms',
-                'Predictive analytics for deal probability and timing',
-                'Smart meeting scheduling that respects all time zones',
-                'Automated compliance checks and audit trail generation',
+                'Multi-agent AI orchestrates complex deal workflows',
+                'Real-time collaboration with version control',
+                'Automated document analysis and risk flagging',
+                'Customizable M&A playbooks and templates',
+                'Enterprise-grade security with SOC2 compliance',
+                'Seamless integration with your existing tools',
               ].map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <svg className="w-3.5 h-3.5 text-accent-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-foreground">{item}</span>
+                  <svg className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-foreground font-medium">{item}</span>
                 </li>
               ))}
             </ul>

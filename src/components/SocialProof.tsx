@@ -2,11 +2,11 @@ import AnimatedSection from './AnimatedSection';
 
 const partners = [
   { name: 'Goldman Sachs', logo: 'GS' },
-  { name: 'McKinsey & Company', logo: 'McK' },
-  { name: 'KKR & Co', logo: 'KKR' },
+  { name: 'Morgan Stanley', logo: 'MS' },
   { name: 'Blackstone', logo: 'BX' },
+  { name: 'McKinsey', logo: 'Mc' },
+  { name: 'KKR', logo: 'KKR' },
   { name: 'Bain Capital', logo: 'BC' },
-  { name: 'Carlyle Group', logo: 'CG' },
 ];
 
 const testimonials = [
@@ -35,23 +35,27 @@ const testimonials = [
 
 const SocialProof = () => {
   return (
-    <section className="section-padding bg-muted/30">
+    <section className="section-padding bg-muted/50">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Partner Logos */}
-        <AnimatedSection className="text-center mb-16">
-          <span className="text-sm text-muted-foreground uppercase tracking-wider font-medium">
-            Trusted by leading institutions
+        <AnimatedSection className="text-center">
+          <span className="text-sm text-muted-foreground uppercase tracking-[0.2em] font-medium">
+            Trusted by leading financial institutions
           </span>
-          <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12 mt-8">
+          <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-10 mt-10">
             {partners.map((partner, index) => (
               <div
                 key={partner.name}
-                className="flex items-center justify-center w-24 h-16 rounded-lg bg-card border border-border/50 shadow-card hover:shadow-soft transition-shadow"
-                title={partner.name}
+                className="flex items-center gap-3"
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
-                <span className="font-serif font-bold text-xl text-muted-foreground/60">
-                  {partner.logo}
+                <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                  <span className="font-serif font-semibold text-sm text-muted-foreground">
+                    {partner.logo}
+                  </span>
+                </div>
+                <span className="text-foreground/80 font-medium text-sm">
+                  {partner.name}
                 </span>
               </div>
             ))}
@@ -59,7 +63,7 @@ const SocialProof = () => {
         </AnimatedSection>
 
         {/* Testimonials */}
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto mt-24">
           <AnimatedSection className="text-center mb-12">
             <h2 className="font-serif text-3xl lg:text-4xl font-medium">
               What our clients say

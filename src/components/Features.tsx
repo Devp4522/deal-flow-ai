@@ -1,42 +1,55 @@
-import { Calendar, FileSearch, BarChart3, Shield, Users, Plug } from 'lucide-react';
+import { FileSearch, Shield, TrendingUp, Lightbulb, Calculator, Handshake } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import AnimatedSection from './AnimatedSection';
 
 const features = [
   {
-    icon: Calendar,
-    title: 'Automated Deal Scheduling',
-    description: 'Auto-schedule meetings, reminders, and review cycles across stakeholders and time zones.',
-    color: 'bg-blue-50 text-blue-600',
-  },
-  {
     icon: FileSearch,
-    title: 'AI Due Diligence Assist',
-    description: 'Multi-agent AI summarizes data-room documents, flags risk signals, and auto-creates diligence checklists.',
-    color: 'bg-purple-50 text-purple-600',
-  },
-  {
-    icon: BarChart3,
-    title: 'Live Pipeline Analytics',
-    description: 'Real-time dashboards and forecasts to prioritize deals and track KPIs.',
-    color: 'bg-green-50 text-green-600',
+    title: 'Research Agents',
+    description: 'AI-powered company analysis and research briefs with comparable company identification.',
+    color: 'bg-blue-50 text-blue-600',
+    href: '/research',
+    isResearch: true,
   },
   {
     icon: Shield,
-    title: 'Secure Data Rooms & Audit Trails',
-    description: 'Enterprise-grade encryption, permissions, and immutable logs for complete compliance.',
+    title: 'AI Due Diligence Assist',
+    description: 'Multi-agent AI summarizes data-room documents, flags risk signals, and auto-creates diligence checklists.',
+    color: 'bg-purple-50 text-purple-600',
+    href: '#pricing',
+    isResearch: false,
+  },
+  {
+    icon: TrendingUp,
+    title: 'Financial Agent',
+    description: 'Automated financial modeling, projections, and scenario analysis for M&A transactions.',
+    color: 'bg-green-50 text-green-600',
+    href: '#pricing',
+    isResearch: false,
+  },
+  {
+    icon: Lightbulb,
+    title: 'High Quality Wall Street Insights',
+    description: 'Access curated research, market intelligence, and expert analysis from top analysts.',
     color: 'bg-amber-50 text-amber-600',
+    href: '#pricing',
+    isResearch: false,
   },
   {
-    icon: Users,
-    title: 'Collaboration & Workflow Templates',
-    description: 'Pre-built M&A playbooks, comment threads, and versioned documents for seamless teamwork.',
+    icon: Calculator,
+    title: 'Valuation Agent',
+    description: 'AI-driven valuation models using DCF, comparables, and precedent transactions.',
     color: 'bg-rose-50 text-rose-600',
+    href: '#pricing',
+    isResearch: false,
   },
   {
-    icon: Plug,
-    title: 'Integrations',
-    description: 'Connect Slack, Google Calendar, Salesforce, DocuSign, and major data providers.',
+    icon: Handshake,
+    title: 'Negotiation Agent',
+    description: 'Intelligent negotiation support with term sheet analysis and deal structuring automation.',
     color: 'bg-cyan-50 text-cyan-600',
+    href: '#pricing',
+    isResearch: false,
   },
 ];
 
@@ -45,6 +58,19 @@ interface FeaturesProps {
 }
 
 const Features = ({ screenshotImage }: FeaturesProps) => {
+  const navigate = useNavigate();
+
+  const handleTryNow = (feature: typeof features[0]) => {
+    if (feature.isResearch) {
+      navigate('/research');
+    } else {
+      const pricingSection = document.querySelector('#pricing');
+      if (pricingSection) {
+        pricingSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section id="products" className="section-padding relative">
       <div className="container mx-auto px-4 lg:px-8">
@@ -75,8 +101,11 @@ const Features = ({ screenshotImage }: FeaturesProps) => {
                 <p className="text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
-                <button className="mt-4 text-sm font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1">
-                  Learn more
+                <button 
+                  onClick={() => handleTryNow(feature)}
+                  className="mt-4 text-sm font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1"
+                >
+                  Try now
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, Zap, Loader2, ChevronDown, FileSearch, BarChart3, Layers } from 'lucide-react';
+import { Menu, X, Zap, Loader2, ChevronDown, FileSearch, Shield, TrendingUp, Lightbulb, Calculator, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -11,23 +11,44 @@ interface NavigationProps {
 const productItems = [
   {
     icon: FileSearch,
-    title: 'Research Agent',
+    title: 'Research Agents',
     description: 'AI-powered company analysis and briefs',
     href: '/research',
     isRoute: true,
   },
   {
-    icon: BarChart3,
-    title: 'Deal Flow',
-    description: 'Track and manage M&A opportunities',
-    href: '#products',
+    icon: Shield,
+    title: 'AI Due Diligence Assist',
+    description: 'Summarize documents and flag risks',
+    href: '#pricing',
     isRoute: false,
   },
   {
-    icon: Layers,
-    title: 'Comparables',
-    description: 'Find and analyze comparable companies',
-    href: '#products',
+    icon: TrendingUp,
+    title: 'Financial Agent',
+    description: 'Automated financial modeling',
+    href: '#pricing',
+    isRoute: false,
+  },
+  {
+    icon: Lightbulb,
+    title: 'Wall Street Insights',
+    description: 'Curated research and market intelligence',
+    href: '#pricing',
+    isRoute: false,
+  },
+  {
+    icon: Calculator,
+    title: 'Valuation Agent',
+    description: 'AI-driven valuation models',
+    href: '#pricing',
+    isRoute: false,
+  },
+  {
+    icon: Handshake,
+    title: 'Negotiation Agent',
+    description: 'Deal structuring automation',
+    href: '#pricing',
     isRoute: false,
   },
 ];

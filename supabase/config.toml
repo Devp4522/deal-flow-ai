@@ -5,3 +5,6 @@ verify_jwt = true
 
 [functions.get-research-usage]
 verify_jwt = true
+
+[functions.process-financial-model]
+verify_jwt = true

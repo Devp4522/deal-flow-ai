@@ -24,8 +24,8 @@ const features = [
     title: 'Financial Agent',
     description: 'Automated financial modeling, projections, and scenario analysis for M&A transactions.',
     color: 'bg-green-50 text-green-600',
-    href: '#pricing',
-    isResearch: false,
+    href: '/financial-agent',
+    isResearch: true,
   },
   {
     icon: Lightbulb,

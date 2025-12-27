@@ -83,6 +83,140 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_files: {
+        Row: {
+          file_key: string
+          file_type: string
+          filename: string
+          id: string
+          statement_type: string | null
+          uploaded_at: string | null
+          user_id: string
+        }
+        Insert: {
+          file_key: string
+          file_type: string
+          filename: string
+          id?: string
+          statement_type?: string | null
+          uploaded_at?: string | null
+          user_id: string
+        }
+        Update: {
+          file_key?: string
+          file_type?: string
+          filename?: string
+          id?: string
+          statement_type?: string | null
+          uploaded_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      financial_model_audit: {
+        Row: {
+          agent_version_hash: string | null
+          created_at: string | null
+          id: string
+          llm_prompt_tokens: number | null
+          llm_response_tokens: number | null
+          notes: string | null
+          prompt_version: string | null
+          run_id: string | null
+        }
+        Insert: {
+          agent_version_hash?: string | null
+          created_at?: string | null
+          id?: string
+          llm_prompt_tokens?: number | null
+          llm_response_tokens?: number | null
+          notes?: string | null
+          prompt_version?: string | null
+          run_id?: string | null
+        }
+        Update: {
+          agent_version_hash?: string | null
+          created_at?: string | null
+          id?: string
+          llm_prompt_tokens?: number | null
+          llm_response_tokens?: number | null
+          notes?: string | null
+          prompt_version?: string | null
+          run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_model_audit_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "financial_model_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_model_runs: {
+        Row: {
+          assumptions: Json | null
+          checks: Json | null
+          company_name: string | null
+          completed_at: string | null
+          created_at: string | null
+          currency: string | null
+          dcf_summary: Json | null
+          error_text: string | null
+          external_data: Json | null
+          fiscal_year_end: string | null
+          id: string
+          inputs: Json | null
+          provenance: Json | null
+          result_json: Json | null
+          status: string | null
+          ticker: string
+          user_id: string
+          workflow_id: string | null
+        }
+        Insert: {
+          assumptions?: Json | null
+          checks?: Json | null
+          company_name?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          dcf_summary?: Json | null
+          error_text?: string | null
+          external_data?: Json | null
+          fiscal_year_end?: string | null
+          id?: string
+          inputs?: Json | null
+          provenance?: Json | null
+          result_json?: Json | null
+          status?: string | null
+          ticker: string
+          user_id: string
+          workflow_id?: string | null
+        }
+        Update: {
+          assumptions?: Json | null
+          checks?: Json | null
+          company_name?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          dcf_summary?: Json | null
+          error_text?: string | null
+          external_data?: Json | null
+          fiscal_year_end?: string | null
+          id?: string
+          inputs?: Json | null
+          provenance?: Json | null
+          result_json?: Json | null
+          status?: string | null
+          ticker?: string
+          user_id?: string
+          workflow_id?: string | null
+        }
+        Relationships: []
+      }
       user_research_usage: {
         Row: {
           created_at: string

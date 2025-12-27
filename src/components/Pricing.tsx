@@ -1,70 +1,126 @@
 import { useState } from 'react';
-import { Rocket, Award, Building2, Check } from 'lucide-react';
+import { Sparkles, Rocket, Award, Building2, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { useNavigate } from 'react-router-dom';
 import AnimatedSection from './AnimatedSection';
 
 interface PricingProps {
   onBookDemo: () => void;
 }
 
-const plans = [
+interface Feature {
+  text: string;
+  included: boolean;
+}
+
+interface Plan {
+  name: string;
+  icon: React.ElementType;
+  monthlyPrice: number | null;
+  yearlyPrice: number | null;
+  description: string;
+  features: Feature[];
+  cta: string;
+  popular: boolean;
+  ctaAction: 'tryNow' | 'upgrade' | 'bookDemo';
+}
+
+const plans: Plan[] = [
+  {
+    name: 'Free',
+    icon: Sparkles,
+    monthlyPrice: 0,
+    yearlyPrice: 0,
+    description: 'Get started with basic research capabilities.',
+    features: [
+      { text: '3 usage of research agent', included: true },
+      { text: 'Access to basic brief & comps', included: true },
+      { text: 'Financial agent', included: false },
+      { text: 'Valuation agent', included: false },
+      { text: 'Negotiation agent', included: false },
+      { text: 'Watermark on exports', included: false },
+    ],
+    cta: 'Try Now',
+    popular: false,
+    ctaAction: 'tryNow',
+  },
   {
     name: 'Startup',
     icon: Rocket,
-    monthlyPrice: 99,
-    yearlyPrice: 79,
+    monthlyPrice: 49,
+    yearlyPrice: 39,
     description: 'For small teams running occasional deals.',
     features: [
-      'Core scheduling & analytics',
-      'Up to 5 team members',
-      '10 active deals',
-      'Email support',
-      'Basic integrations',
+      { text: '25 usage of research agent', included: true },
+      { text: '10 usage of financial, valuation & negotiation agent', included: true },
+      { text: 'Downloadable Excel & PDF', included: true },
+      { text: 'No watermark', included: true },
+      { text: '5 active deals', included: true },
+      { text: '1 seat / up to 3 users', included: true },
+      { text: 'Email support (3 business days)', included: true },
+      { text: 'Calendar + Slack basic integrations', included: true },
     ],
     cta: 'Upgrade',
     popular: false,
+    ctaAction: 'upgrade',
   },
   {
     name: 'Pro',
     icon: Award,
-    monthlyPrice: 699,
-    yearlyPrice: 559,
+    monthlyPrice: 299,
+    yearlyPrice: 239,
     description: 'For teams managing recurring deal flow & advanced analytics.',
     features: [
-      'Everything in Startup, plus:',
-      'Unlimited team members',
-      'Unlimited active deals',
-      'AI due diligence assist',
-      'Advanced analytics & reporting',
-      'Priority support',
-      'Custom integrations',
+      { text: 'Everything in Startup, plus:', included: true },
+      { text: '80 workflows/month (add purchased credits)', included: true },
+      { text: 'Up to 10 users / role-based seats', included: true },
+      { text: 'Full Excel models, DCF + sensitivity charts', included: true },
+      { text: 'Pitchbook generator (PDF/PPTX)', included: true },
+      { text: 'Negotiation simulator + templated LOI drafts', included: true },
+      { text: 'Priority support (SLA 24 hours)', included: true },
+      { text: 'Onboarding assistance (remote)', included: true },
+      { text: 'Slack, GCalendar, Salesforce basic connector', included: true },
     ],
     cta: 'Upgrade',
     popular: true,
+    ctaAction: 'upgrade',
   },
   {
     name: 'Enterprise',
     icon: Building2,
-    monthlyPrice: 9999,
-    yearlyPrice: 7999,
+    monthlyPrice: null,
+    yearlyPrice: null,
     description: 'Custom SLAs, advanced integrations, dedicated onboarding.',
     features: [
-      'Everything in Pro, plus:',
-      'Dedicated account manager',
-      'Custom SLA & uptime guarantee',
-      'SSO & advanced security',
-      'White-label options',
-      'On-premise deployment option',
-      'API access & custom development',
+      { text: 'Custom/unlimited workflows', included: true },
+      { text: 'SSO, SAML, VPC or on-prem connector option', included: true },
+      { text: 'Dedicated support', included: true },
+      { text: 'Onboarding services', included: true },
+      { text: 'SLA, uptime guarantees, dedicated CSM', included: true },
+      { text: 'Audit packages, compliance assistance (SOC2)', included: true },
+      { text: 'Custom models & templates', included: true },
+      { text: 'Priority engineering support', included: true },
+      { text: 'Custom data connectors', included: true },
     ],
-    cta: 'Book a Demo',
+    cta: 'Contact Sales',
     popular: false,
+    ctaAction: 'bookDemo',
   },
 ];
 
 const Pricing = ({ onBookDemo }: PricingProps) => {
   const [isAnnual, setIsAnnual] = useState(true);
+  const navigate = useNavigate();
+
+  const handleCtaClick = (plan: Plan) => {
+    if (plan.ctaAction === 'tryNow') {
+      navigate('/research');
+    } else if (plan.ctaAction === 'bookDemo') {
+      onBookDemo();
+    }
+    // For 'upgrade', we could add payment flow later
+  };
 
   return (
     <section id="pricing" className="section-padding">
@@ -103,7 +159,7 @@ const Pricing = ({ onBookDemo }: PricingProps) => {
         </AnimatedSection>
 
         {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-3 gap-6 max-w-6xl mx-auto items-stretch">
+        <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto items-stretch">
           {plans.map((plan, index) => {
             const price = isAnnual ? plan.yearlyPrice : plan.monthlyPrice;
             const isEnterprise = plan.name === 'Enterprise';
@@ -132,12 +188,20 @@ const Pricing = ({ onBookDemo }: PricingProps) => {
 
                   <div className="mb-4">
                     <div className="flex items-baseline gap-1">
-                      <span className="font-serif text-4xl font-bold text-primary-foreground">
-                        ${price.toLocaleString()}
-                      </span>
-                      <span className="text-primary-foreground/70">/ month</span>
+                      {price !== null ? (
+                        <>
+                          <span className="font-serif text-4xl font-bold text-primary-foreground">
+                            ${price}
+                          </span>
+                          <span className="text-primary-foreground/70">/ month</span>
+                        </>
+                      ) : (
+                        <span className="font-serif text-3xl font-bold text-primary-foreground">
+                          Custom
+                        </span>
+                      )}
                     </div>
-                    {isAnnual && (
+                    {isAnnual && price !== null && price > 0 && (
                       <span className="text-sm text-primary-foreground/60">
                         billed annually
                       </span>
@@ -151,22 +215,26 @@ const Pricing = ({ onBookDemo }: PricingProps) => {
                   <ul className="space-y-3 mb-8 flex-grow">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                        <span className="text-primary-foreground/90 text-sm">
-                          {feature}
+                        {feature.included ? (
+                          <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                        ) : (
+                          <X className="w-5 h-5 text-destructive/60 flex-shrink-0 mt-0.5" />
+                        )}
+                        <span className={`text-sm ${feature.included ? 'text-primary-foreground/90' : 'text-primary-foreground/50 line-through'}`}>
+                          {feature.text}
                         </span>
                       </li>
                     ))}
                   </ul>
 
                   <Button
-                    onClick={isEnterprise ? onBookDemo : undefined}
+                    onClick={() => handleCtaClick(plan)}
                     className={`w-full rounded-full py-6 font-semibold ${
                       plan.popular
                         ? 'bg-accent text-accent-foreground hover:bg-accent/90'
                         : 'bg-primary-foreground text-primary hover:bg-primary-foreground/90'
                     }`}
-                    aria-label={isEnterprise ? 'Book a demo for Enterprise plan' : `${plan.cta} to ${plan.name} plan`}
+                    aria-label={`${plan.cta} for ${plan.name} plan`}
                   >
                     {plan.cta}
                   </Button>

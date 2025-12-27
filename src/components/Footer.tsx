@@ -1,12 +1,13 @@
-import { Linkedin, Twitter, Github, Zap } from 'lucide-react';
+import { Linkedin, Twitter, Github, Zap, FileSearch } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import AnimatedSection from './AnimatedSection';
 
 const footerLinks = {
   product: [
     { label: 'Features', href: '#products' },
     { label: 'Pricing', href: '#pricing' },
+    { label: 'Research', href: '/research', isRoute: true },
     { label: 'Integrations', href: '#products' },
-    { label: 'Changelog', href: '#' },
   ],
   resources: [
     { label: 'Documentation', href: '#docs' },
@@ -76,12 +77,22 @@ const Footer = ({ onBookDemo }: FooterProps) => {
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.label}>
-                  <button
-                    onClick={() => scrollToSection(link.href)}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </button>
+                  {'isRoute' in link && link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm flex items-center gap-1.5"
+                    >
+                      {link.label === 'Research' && <FileSearch className="w-3.5 h-3.5" />}
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => scrollToSection(link.href)}
+                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
+                    >
+                      {link.label}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

@@ -1,9 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const MAX_RESEARCH_USES = 3;
 
 interface CompanyOverview {
   Symbol: string;
@@ -31,6 +34,58 @@ interface NewsItem {
   source: string;
   time_published: string;
   overall_sentiment_label: string;
+}
+
+async function getOrCreateUsage(supabase: any, userId: string) {
+  // Try to get existing usage
+  const { data: existingUsage, error: selectError } = await supabase
+    .from('user_research_usage')
+    .select('*')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (selectError) {
+    console.error('Error fetching usage:', selectError);
+    throw new Error('Failed to check usage quota');
+  }
+
+  if (existingUsage) {
+    return existingUsage;
+  }
+
+  // Create new usage record
+  const { data: newUsage, error: insertError } = await supabase
+    .from('user_research_usage')
+    .insert({ user_id: userId, usage_count: 0 })
+    .select()
+    .single();
+
+  if (insertError) {
+    console.error('Error creating usage:', insertError);
+    throw new Error('Failed to initialize usage quota');
+  }
+
+  return newUsage;
+}
+
+async function incrementUsage(supabase: any, userId: string, currentCount: number) {
+  const { data, error } = await supabase
+    .from('user_research_usage')
+    .update({ 
+      usage_count: currentCount + 1,
+      last_used_at: new Date().toISOString()
+    })
+    .eq('user_id', userId)
+    .eq('usage_count', currentCount) // Optimistic locking to prevent race conditions
+    .select()
+    .single();
+
+  if (error || !data) {
+    console.error('Error incrementing usage:', error);
+    throw new Error('Failed to update usage quota. Please try again.');
+  }
+
+  return data;
 }
 
 async function fetchCompanyOverview(ticker: string, apiKey: string): Promise<CompanyOverview | null> {
@@ -221,6 +276,51 @@ serve(async (req) => {
   }
 
   try {
+    // Get the authorization header
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required', code: 'auth_required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create Supabase client with the user's JWT
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    // Verify the user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
+    if (userError || !user) {
+      console.error('Auth error:', userError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication', code: 'auth_invalid' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log(`User ${user.id} requesting analysis`);
+
+    // Check usage quota
+    const usage = await getOrCreateUsage(supabase, user.id);
+    const remaining = MAX_RESEARCH_USES - usage.usage_count;
+
+    if (remaining <= 0) {
+      console.log(`User ${user.id} has exhausted quota`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Research quota exhausted. You have used all 3 research analyses.',
+          code: 'quota_exhausted',
+          remaining: 0
+        }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { ticker } = await req.json();
     
     if (!ticker || typeof ticker !== 'string') {
@@ -267,6 +367,10 @@ serve(async (req) => {
     // Step 3: Analyze with AI
     const analysis = await analyzeWithAI(companyData, newsData);
 
+    // Step 4: Increment usage (with optimistic locking)
+    const updatedUsage = await incrementUsage(supabase, user.id, usage.usage_count);
+    const newRemaining = MAX_RESEARCH_USES - updatedUsage.usage_count;
+
     const result = {
       ticker: cleanTicker,
       companyName: companyData.Name,
@@ -289,9 +393,10 @@ serve(async (req) => {
       comparables: analysis.comparables,
       newsCount: newsData.length,
       analyzedAt: new Date().toISOString(),
+      remaining: newRemaining,
     };
 
-    console.log('Analysis complete for', cleanTicker);
+    console.log(`Analysis complete for ${cleanTicker}. User ${user.id} has ${newRemaining} remaining.`);
 
     return new Response(
       JSON.stringify(result),

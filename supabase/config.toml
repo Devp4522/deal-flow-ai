@@ -2,3 +2,6 @@ project_id = "dcmwlhffoacjumkriabl"
 
 [functions.analyze-company]
 verify_jwt = true
+
+[functions.get-research-usage]
+verify_jwt = true

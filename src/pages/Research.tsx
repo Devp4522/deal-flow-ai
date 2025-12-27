@@ -1,19 +1,39 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, FileSearch } from 'lucide-react';
+import { ArrowLeft, FileSearch, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Search } from 'lucide-react';
 import { TickerInput } from '@/components/research/TickerInput';
 import { CompanyHeader } from '@/components/research/CompanyHeader';
 import { ReportBrief } from '@/components/research/ReportBrief';
 import { ComparablesTable } from '@/components/research/ComparablesTable';
 import { ReportActions } from '@/components/research/ReportActions';
 import { useCompanyResearch } from '@/hooks/useCompanyResearch';
+import { useResearchUsage } from '@/hooks/useResearchUsage';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Research() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { report, step, error, analyzeCompany, saveReport, reset } = useCompanyResearch();
+  const { report, step, error, analyzeCompany, saveReport, reset, updateRemaining } = useCompanyResearch();
+  const { usage, loading: usageLoading, refetch: refetchUsage, updateRemaining: updateUsageRemaining } = useResearchUsage();
+
+  const handleAnalyze = async (ticker: string) => {
+    await analyzeCompany(ticker);
+  };
+
+  // Update remaining after successful analysis
+  const handleAnalyzeWithUsageUpdate = async (ticker: string) => {
+    const result = await analyzeCompany(ticker);
+    // The remaining count is now returned from the edge function
+    // and handled in the useCompanyResearch hook
+    if (result?.remaining !== undefined) {
+      updateUsageRemaining(result.remaining);
+    } else {
+      // Refetch usage on success
+      refetchUsage();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +53,12 @@ export default function Research() {
           </div>
           {!user && (
             <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
-              Sign in to save reports
+              Sign in to use
+            </Button>
+          )}
+          {user && (
+            <Button variant="ghost" size="sm" onClick={() => navigate('/auth')}>
+              {user.email}
             </Button>
           )}
         </div>
@@ -49,8 +74,23 @@ export default function Research() {
             Enter a stock ticker to get an AI-powered executive brief with financial analysis, 
             risk assessment, and comparable companies.
           </p>
-          <TickerInput onAnalyze={analyzeCompany} step={step} />
+          <TickerInput 
+            onAnalyze={handleAnalyzeWithUsageUpdate} 
+            step={step} 
+            remaining={usage?.remaining ?? null}
+            isAuthenticated={!!user}
+          />
         </section>
+
+        {/* Last Used Info */}
+        {user && usage?.lastUsedAt && (
+          <div className="flex justify-center mb-8">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4" />
+              <span>Last used: {new Date(usage.lastUsedAt).toLocaleDateString()}</span>
+            </div>
+          </div>
+        )}
 
         {/* Error State */}
         {error && step === 'error' && (
@@ -120,8 +160,10 @@ export default function Research() {
               Ready to Research
             </h3>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Enter a US stock ticker above to generate a comprehensive company analysis 
-              powered by real-time financial data and AI.
+              {user 
+                ? 'Enter a US stock ticker above to generate a comprehensive company analysis powered by real-time financial data and AI.'
+                : 'Sign in to generate AI-powered company research briefs. Each user gets 3 free research analyses.'
+              }
             </p>
           </div>
         )}

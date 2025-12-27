@@ -3,13 +3,18 @@ import { supabase } from '@/integrations/supabase/client';
 import type { CompanyReport, AnalysisStep } from '@/types/research';
 import { useToast } from '@/hooks/use-toast';
 
+interface AnalyzeResult extends CompanyReport {
+  remaining?: number;
+}
+
 export function useCompanyResearch() {
   const [report, setReport] = useState<CompanyReport | null>(null);
   const [step, setStep] = useState<AnalysisStep>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [remaining, setRemaining] = useState<number | null>(null);
   const { toast } = useToast();
 
-  const analyzeCompany = useCallback(async (ticker: string) => {
+  const analyzeCompany = useCallback(async (ticker: string): Promise<AnalyzeResult | null> => {
     setError(null);
     setReport(null);
     setStep('fetching');
@@ -28,6 +33,13 @@ export function useCompanyResearch() {
       }
 
       if (data.error) {
+        if (data.code === 'quota_exhausted') {
+          setRemaining(0);
+          throw new Error('Research quota exhausted. You have used all 3 research analyses.');
+        }
+        if (data.code === 'auth_required' || data.code === 'auth_invalid') {
+          throw new Error('Please sign in to use the research feature.');
+        }
         throw new Error(data.error);
       }
 
@@ -37,10 +49,16 @@ export function useCompanyResearch() {
       setReport(data as CompanyReport);
       setStep('complete');
       
+      if (data.remaining !== undefined) {
+        setRemaining(data.remaining);
+      }
+      
       toast({
         title: 'Analysis Complete',
         description: `Successfully analyzed ${data.companyName}`,
       });
+
+      return data as AnalyzeResult;
 
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Analysis failed';
@@ -52,8 +70,14 @@ export function useCompanyResearch() {
         description: message,
         variant: 'destructive',
       });
+      
+      return null;
     }
   }, [toast]);
+
+  const updateRemaining = useCallback((value: number) => {
+    setRemaining(value);
+  }, []);
 
   const saveReport = useCallback(async () => {
     if (!report) return;
@@ -109,8 +133,10 @@ export function useCompanyResearch() {
     report,
     step,
     error,
+    remaining,
     analyzeCompany,
     saveReport,
     reset,
+    updateRemaining,
   };
 }

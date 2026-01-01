@@ -15,6 +15,9 @@ serve(async (req) => {
 
   try {
     const authHeader = req.headers.get('authorization');
+    const hasAuth = !!authHeader;
+    console.log(`[get-research-usage] ${req.method} auth=${hasAuth}`);
+
     if (!authHeader) {
       return new Response(
         JSON.stringify({ error: 'Authentication required' }),

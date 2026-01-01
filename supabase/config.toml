@@ -4,7 +4,7 @@ project_id = "dcmwlhffoacjumkriabl"
 verify_jwt = true
 
 [functions.get-research-usage]
-verify_jwt = true
+verify_jwt = false
 
 [functions.process-financial-model]
 verify_jwt = true

@@ -217,6 +217,174 @@ export type Database = {
         }
         Relationships: []
       }
+      negotiation_approvals: {
+        Row: {
+          created_at: string
+          decision: string
+          id: string
+          negotiation_id: string
+          reason: string
+          revision: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          decision: string
+          id?: string
+          negotiation_id: string
+          reason: string
+          revision: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          decision?: string
+          id?: string
+          negotiation_id?: string
+          reason?: string
+          revision?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "negotiation_approvals_negotiation_id_fkey"
+            columns: ["negotiation_id"]
+            isOneToOne: false
+            referencedRelation: "negotiations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      negotiation_audit: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          negotiation_id: string
+          payload: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          negotiation_id: string
+          payload?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          negotiation_id?: string
+          payload?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "negotiation_audit_negotiation_id_fkey"
+            columns: ["negotiation_id"]
+            isOneToOne: false
+            referencedRelation: "negotiations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      negotiation_revisions: {
+        Row: {
+          created_at: string
+          id: string
+          inputs: Json
+          negotiation_id: string
+          results: Json | null
+          revision: number
+          risk_flags: Json | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          inputs?: Json
+          negotiation_id: string
+          results?: Json | null
+          revision: number
+          risk_flags?: Json | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          inputs?: Json
+          negotiation_id?: string
+          results?: Json | null
+          revision?: number
+          risk_flags?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "negotiation_revisions_negotiation_id_fkey"
+            columns: ["negotiation_id"]
+            isOneToOne: false
+            referencedRelation: "negotiations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      negotiation_usage: {
+        Row: {
+          created_at: string
+          id: string
+          last_used_at: string | null
+          updated_at: string
+          usage_count: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          updated_at?: string
+          usage_count?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          updated_at?: string
+          usage_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      negotiations: {
+        Row: {
+          company: Json
+          created_at: string
+          current_revision: number
+          id: string
+          state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: Json
+          created_at?: string
+          current_revision?: number
+          id?: string
+          state?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: Json
+          created_at?: string
+          current_revision?: number
+          id?: string
+          state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_research_usage: {
         Row: {
           created_at: string

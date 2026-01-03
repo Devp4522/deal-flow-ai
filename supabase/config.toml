@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.process-financial-model]
 verify_jwt = false
+
+[functions.negotiation]
+verify_jwt = false

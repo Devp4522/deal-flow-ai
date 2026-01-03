@@ -48,8 +48,8 @@ const features = [
     title: 'Negotiation Agent',
     description: 'Intelligent negotiation support with term sheet analysis and deal structuring automation.',
     color: 'bg-cyan-50 text-cyan-600',
-    href: '#pricing',
-    isResearch: false,
+    href: '/negotiation',
+    isResearch: true,
   },
 ];
 

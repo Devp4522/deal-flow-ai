@@ -48,8 +48,8 @@ const productItems = [
     icon: Handshake,
     title: 'Negotiation Agent',
     description: 'Deal structuring automation',
-    href: '#pricing',
-    isRoute: false,
+    href: '/negotiation',
+    isRoute: true,
   },
 ];
 
